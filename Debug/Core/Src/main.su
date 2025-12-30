@@ -1,0 +1,13 @@
+../Core/Inc/tcpClientRAW.h:152:6:ClientCloseConnection	16	static
+../Core/Inc/tcpClientRAW.h:174:13:ClientSendString	24	static
+../Core/Inc/tcpClientRAW.h:206:6:ClientHandleRecievedData	216	static
+../Core/Inc/tcpClientRAW.h:335:14:callbackDataReciev	32	static
+../Core/Inc/tcpClientRAW.h:415:14:ClientPoll	24	static
+../Core/Inc/tcpClientRAW.h:438:14:callbackDataSent	32	static
+../Core/Inc/tcpClientRAW.h:457:13:ClientSendData	32	static
+../Core/Inc/tcpClientRAW.h:524:14:callbackClientConnected	32	static
+../Core/Inc/tcpClientRAW.h:574:6:initTcpClient	32	static
+../Core/Src/main.c:72:5:main	16	static
+../Core/Src/main.c:136:6:SystemClock_Config	88	static
+../Core/Src/main.c:195:6:MPU_Config	24	static
+../Core/Src/main.c:226:6:Error_Handler	4	static,ignoring_inline_asm

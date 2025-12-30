@@ -1,0 +1,13 @@
+../Core/Inc/tcpClientRAW.h:152:6:ClientCloseConnection	2
+../Core/Inc/tcpClientRAW.h:174:13:ClientSendString	3
+../Core/Inc/tcpClientRAW.h:206:6:ClientHandleRecievedData	9
+../Core/Inc/tcpClientRAW.h:335:14:callbackDataReciev	8
+../Core/Inc/tcpClientRAW.h:415:14:ClientPoll	4
+../Core/Inc/tcpClientRAW.h:438:14:callbackDataSent	3
+../Core/Inc/tcpClientRAW.h:457:13:ClientSendData	8
+../Core/Inc/tcpClientRAW.h:524:14:callbackClientConnected	2
+../Core/Inc/tcpClientRAW.h:574:6:initTcpClient	1
+../Core/Src/main.c:72:5:main	1
+../Core/Src/main.c:136:6:SystemClock_Config	4
+../Core/Src/main.c:195:6:MPU_Config	1
+../Core/Src/main.c:226:6:Error_Handler	1
