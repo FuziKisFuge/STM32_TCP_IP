@@ -16,6 +16,7 @@ typedef struct{
 	uint16_t MaxTorque;
 }sControlConfig;
 
+
 extern sControlConfig ControlConfig;
 
 #endif /* INC_CONTROLERCONFIG_H_ */

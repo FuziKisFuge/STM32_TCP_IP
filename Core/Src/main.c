@@ -20,6 +20,7 @@
 #include "main.h"
 #include "i2c.h"
 #include "lwip.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_otg.h"
 #include "gpio.h"
@@ -30,6 +31,9 @@
 #include "ControlerConfig.h"
 #include "u8g2_porting.h"
 #include "Display.h"
+#include "AS5600Driver.h"
+
+
 
 /* USER CODE END Includes */
 
@@ -54,6 +58,8 @@
 extern struct netif gnetif;
 uint32_t lastMillis = 0;
 sControlConfig ControlConfig = {0};
+
+AS5600Handle_Typedef *Encoder1;
 
 /* USER CODE END PV */
 
@@ -105,10 +111,37 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_LWIP_Init();
   MX_I2C1_Init();
+  MX_TIM2_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   initTcpClient(192, 168, 0, 108, 2333);
 
-  initDisplay(&InfoDisplay, U8G2_R0, u8g2_i2c_stm32, u8g2_gpio_and_delay_stm32, u8g2_font_04b_03_tr);
+	initDisplay(&InfoDisplay, U8G2_R0, u8g2_font_04b_03_tr);
+
+	Encoder1 = AS5600_Create(0x36,
+								360.0f,
+								0.0f);
+
+	AS5600_AttachPeripheral(Encoder1,
+							&hi2c2,
+							&htim2);
+	if (Encoder1 == NULL)
+	{
+		while (1);
+	}
+
+	AS5600_Configure(Encoder1,
+						NOM,
+						OFF,
+						PWM,
+						_115Hz,
+						_16x,
+						SlowFilterOnly,
+						Off);
+
+	AS5600_ReadRawAngle_I2C(Encoder1);
+
+	AS5600_UpdateStatus(Encoder1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -121,8 +154,10 @@ int main(void)
 
 	  if ((HAL_GetTick() - lastMillis) > 1000 )
 	  {
-		  Menu = Main;
-		  updateDisplay(&InfoDisplay, Menu);
+		  AS5600_ReadAngle_PWM(Encoder1);
+		  AS5600_UpdateAbsolutePosition(Encoder1);
+
+		  updateDisplay(&InfoDisplay, Main);
 		  lastMillis = HAL_GetTick();
 	  }
 

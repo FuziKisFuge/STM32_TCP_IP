@@ -8,6 +8,10 @@
 #ifndef INC_DISPLAY_H_
 #define INC_DISPLAY_H_
 
+#include "AS5600Driver.h"
+
+extern AS5600Handle_Typedef *Encoder1;
+
 typedef enum{
 	Main,
 }eMenu;
@@ -17,7 +21,7 @@ eMenu Menu = Main;
 void updateDisplay(u8g2_t *u8g2, eMenu m)
 {
 	char str[100];
-	u8g2_ClearDisplay(u8g2);
+	u8g2_ClearBuffer(u8g2);
 
 	switch(m)
 	{
@@ -27,6 +31,9 @@ void updateDisplay(u8g2_t *u8g2, eMenu m)
 
 		sprintf(str, "TargetPos: %lu", (unsigned long) ControlConfig.TargetPos);
 		u8g2_DrawStr(u8g2, 0, 30, str);
+
+		sprintf(str, "Pos: %lu", (unsigned long) Encoder1->Angle);
+		u8g2_DrawStr(u8g2, 0, 45, str);
 
 		break;
 	}

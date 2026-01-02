@@ -292,11 +292,16 @@ void ClientHandleRecievedData (struct tcp_pcb *tpcb, struct tcp_client_struct *e
 			p = (uint8_t *)&ControlConfig.TargetPos;
 			s = sizeof(ControlConfig.TargetPos);
 			break;
+
+		default:
+			free(buf);
+			return;
 		}
 
 		//Fail check: Ha az adatcsomag rövidebb mint ami a feldolgozáshoz kell akkor kilép
 		if(i + s > es->p->tot_len)
 		{
+			free(buf);
 			return;
 		}
 
@@ -319,25 +324,18 @@ void ClientHandleRecievedData (struct tcp_pcb *tpcb, struct tcp_client_struct *e
 			sprintf(out, "Val=%lu\n", (unsigned long)val);
 			ClientSendString(tpcb, out);
 			break;
+
+		default:
+			free(buf);
+			return;
 		}
 
 		//Lépés a következő packet-re
 		i += (DATA_START_OFFSET + s);
 	}
+
 	free(buf);
 
-
-	char buff[100];
-	sprintf (buff, "\n Target speed: %d\n Target pos: %d\n  ", ControlConfig.TargetSpeed, ControlConfig.TargetPos);
-
-	ClientSendString(tpcb, buff);
-//	esTx->state = es->state;
-//	esTx->pcb = es->pcb;
-//	esTx->p = es->p;
-
-	//pcbTx = tpcb;
-
-	counter++;
 
 }
 

@@ -130,8 +130,8 @@ uint8_t u8g2_i2c_stm32(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr
 
 
 
-void initDisplay(u8g2_t *u8g2, const u8g2_cb_t *rotation, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb, const uint8_t *font) {
-	u8g2_Setup_ssd1306_i2c_128x64_noname_f(u8g2, rotation, byte_cb, gpio_and_delay_cb);
+void initDisplay(u8g2_t *u8g2, const u8g2_cb_t *rotation, const uint8_t *font) {
+	u8g2_Setup_ssd1306_i2c_128x64_noname_f(u8g2, rotation, u8g2_i2c_stm32, u8g2_gpio_and_delay_stm32);
 	u8g2_InitDisplay(u8g2); // send init sequence to the display, display is in sleep mode after this,
 	u8g2_SetPowerSave(u8g2, 0); // wake up display
 
