@@ -88,6 +88,11 @@
 #define ADDR_IDX	0
 #define LEN_IDX		1
 
+#define FIRST_DATA_PACKET_OFFSET	2
+#define CODE_OFFSET		0
+#define SET_GET_OFFSET	1
+#define DATA_START_OFFSET	2
+
 
 #define END_OF_TRANSMISSION_CODE	0xFF
 
@@ -196,8 +201,10 @@ static void ClientSendString(struct tcp_pcb *tpcb, const char *msg)
 
 
 /*
+ * |------------------------|-------------------------------------------------------|-----------------------------------------------|-------|
+ * |		HEADER			|				       PACKET 1							|					PACKET 2					|		|
  * |------------|-----------|-------------------------------------------------------|-----------------------------------------------|-------|
- * |   ADDRES	|	 LEN 	|	 CODE	|  SET/GET	|  DATA n 	|   DATA n-1 ...	|	 CODE	|  SET/GET	|  DATA 1 	|   DATA 0	|
+ * |   ADDRES	|	 LEN 	|	 CODE	|  SET/GET	|  DATA n 	|   DATA n-1 ...	|	 CODE	|  SET/GET	|  DATA 1 	|   DATA 0	|		|
  * |------------|-----------|-------------------------------------------------------|-----------------------------------------------|-------|
  *
  *
@@ -265,28 +272,29 @@ void ClientHandleRecievedData (struct tcp_pcb *tpcb, struct tcp_client_struct *e
 	uint8_t s = 0;
 
 	//Végig iterál a byteokon
-	for (uint16_t i = 2; i < es->p->tot_len;)
+	for (uint16_t i = FIRST_DATA_PACKET_OFFSET; i < es->p->tot_len;)
 	{
-		uint8_t Code = buf[i++];
-		uint16_t SetGet = buf[i++];
+		uint8_t Code = buf[i + CODE_OFFSET];
+		uint16_t SetGet = buf[i + SET_GET_OFFSET];
 
 
 		//A kód függvényében beírja a megfelelő adatot
 		switch(Code)
 		{
 		case TARGET_SPEED_CODE:
-			//ControlConfig.TargetSpeed = ((uint16_t)(*(buf + (i+1))) << 8) | ((uint16_t)(*(buf + (i+2))));
+			//Pointer ami a TargetSpeed-re mutat
 			p = (uint8_t *)&ControlConfig.TargetSpeed;
+			//TargetSpeed mérete
 			s = sizeof(ControlConfig.TargetSpeed);
 			break;
 
 		case TARGET_POS_CODE:
-			//ControlConfig.TargetPos = ((uint16_t)(*(buf + (i+1))) << 8) | ((uint16_t)(*(buf + (i+2))));
 			p = (uint8_t *)&ControlConfig.TargetPos;
 			s = sizeof(ControlConfig.TargetPos);
 			break;
 		}
 
+		//Fail check: Ha az adatcsomag rövidebb mint ami a feldolgozáshoz kell akkor kilép
 		if(i + s > es->p->tot_len)
 		{
 			return;
@@ -294,11 +302,11 @@ void ClientHandleRecievedData (struct tcp_pcb *tpcb, struct tcp_client_struct *e
 
 
 
-
+		//Választás írás(set) vagy olvasás(get) között
 		switch(SetGet)
 		{
 		case SET_CODE:
-			memcpy(p, &buf[i], s);
+			memcpy(p, &buf[i + DATA_START_OFFSET], s);
 			break;
 
 
@@ -313,7 +321,8 @@ void ClientHandleRecievedData (struct tcp_pcb *tpcb, struct tcp_client_struct *e
 			break;
 		}
 
-		i += s;
+		//Lépés a következő packet-re
+		i += (DATA_START_OFFSET + s);
 	}
 	free(buf);
 

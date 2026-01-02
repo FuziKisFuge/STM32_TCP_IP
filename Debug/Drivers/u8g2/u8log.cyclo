@@ -1,0 +1,17 @@
+../Drivers/u8g2/u8log.c:54:13:u8log_clear_screen	2
+../Drivers/u8g2/u8log.c:69:13:u8log_scroll_up	4
+../Drivers/u8g2/u8log.c:97:13:u8log_cursor_on_screen	3
+../Drivers/u8g2/u8log.c:115:13:u8log_write_to_screen	2
+../Drivers/u8g2/u8log.c:139:6:u8log_write_char	6
+../Drivers/u8g2/u8log.c:173:6:u8log_Init	1
+../Drivers/u8g2/u8log.c:182:6:u8log_SetCallback	1
+../Drivers/u8g2/u8log.c:188:6:u8log_SetRedrawMode	1
+../Drivers/u8g2/u8log.c:194:6:u8log_SetLineHeightOffset	1
+../Drivers/u8g2/u8log.c:201:6:u8log_WriteChar	4
+../Drivers/u8g2/u8log.c:215:6:u8log_WriteString	2
+../Drivers/u8g2/u8log.c:225:13:u8log_WriteHexHalfByte	2
+../Drivers/u8g2/u8log.c:234:6:u8log_WriteHex8	1
+../Drivers/u8g2/u8log.c:240:6:u8log_WriteHex16	1
+../Drivers/u8g2/u8log.c:246:6:u8log_WriteHex32	1
+../Drivers/u8g2/u8log.c:253:6:u8log_WriteDec8	1
+../Drivers/u8g2/u8log.c:259:6:u8log_WriteDec16	1

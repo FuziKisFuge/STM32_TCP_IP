@@ -1,0 +1,4 @@
+../Drivers/u8g2/u8x8_d_stdio.c:44:6:bitmap_place_tile	2
+../Drivers/u8g2/u8x8_d_stdio.c:51:6:bitmap_show	5
+../Drivers/u8g2/u8x8_d_stdio.c:72:9:u8x8_d_stdio	4
+../Drivers/u8g2/u8x8_d_stdio.c:95:6:u8x8_SetupStdio	1

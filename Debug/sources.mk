@@ -26,6 +26,7 @@ Core/Src \
 Core/Startup \
 Drivers/BSP/Components/lan8742 \
 Drivers/STM32F7xx_HAL_Driver/Src \
+Drivers/u8g2 \
 LWIP/App \
 LWIP/Target \
 Middlewares/Third_Party/LwIP/src/api \

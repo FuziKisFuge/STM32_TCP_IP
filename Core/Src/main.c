@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 #include "lwip.h"
 #include "usart.h"
 #include "usb_otg.h"
@@ -27,6 +28,8 @@
 /* USER CODE BEGIN Includes */
 #include "tcpClientRAW.h"
 #include "ControlerConfig.h"
+#include "u8g2_porting.h"
+#include "Display.h"
 
 /* USER CODE END Includes */
 
@@ -51,6 +54,7 @@
 extern struct netif gnetif;
 uint32_t lastMillis = 0;
 sControlConfig ControlConfig = {0};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,8 +104,11 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_LWIP_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   initTcpClient(192, 168, 0, 108, 2333);
+
+  initDisplay(&InfoDisplay, U8G2_R0, u8g2_i2c_stm32, u8g2_gpio_and_delay_stm32, u8g2_font_04b_03_tr);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,15 +118,14 @@ int main(void)
 	  ethernetif_input(&gnetif);
 	  sys_check_timeouts();
 
-	  /*
-	  if ((HAL_GetTick() - lastMillis) > 1000 && pcbTx != NULL)
+
+	  if ((HAL_GetTick() - lastMillis) > 1000 )
 	  {
-		  char buff[100];
-		  sprintf (buff, "Sending TCPclient Message %d\n", counter);
-		  tcp_client_send_string(pcbTx, (char*)buff);
+		  Menu = Main;
+		  updateDisplay(&InfoDisplay, Menu);
 		  lastMillis = HAL_GetTick();
 	  }
-	  */
+
 
 
     /* USER CODE END WHILE */
